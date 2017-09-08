@@ -63,12 +63,51 @@ function create_post_types() {
 add_action( 'init', 'create_post_types' );
 
 //Add cpt to queries
-// Show posts of 'post', 'page' and 'movie' post types on home page
 function add_my_post_types_to_query( $query ) {
 	if ( is_home() && $query->is_main_query() )
 		$query->set( 'post_type', array( 'post', 'page', 'movie' ) );
 	return $query;
 }
 add_action( 'pre_get_posts', 'add_my_post_types_to_query' );
+
+//Shortcode cpt basic query loop
+function cpt_query_basic( $atts ) {
+    $cpt_name = shortcode_atts( array(
+        'cpt' => 'opleidingen',
+    ), $atts );
+
+    //check if cpt exists
+    if ( !get_post_type_object( $cpt_name['cpt'] ) ) {
+    	return "Post type does not exist!";
+    }
+
+    //html to output
+	ob_start();
+
+	//get query
+	$args = array(
+		'post_type' => $cpt_name['cpt']
+	); 
+	$cpt_query = get_posts( $args ); ?>
+
+	<h2><?php echo $cpt_name['cpt']; ?></h2>
+
+	<?php
+
+	if ( $cpt_query ) {
+	    foreach ( $cpt_query as $post ) :
+	        setup_postdata( $post ); ?>
+	        <h2><a href="<?php echo get_the_permalink( $post->ID ); ?>"><?php echo get_the_title( $post->ID ); ?></a></h2>
+	        <?php the_content(); ?>
+	    <?php
+	    endforeach; 
+	    wp_reset_postdata();
+	}
+	?>
+
+	<?php //output html 
+	return ob_get_clean();
+}
+add_shortcode( 'cpt_query', 'cpt_query_basic' );
 
 ?>
