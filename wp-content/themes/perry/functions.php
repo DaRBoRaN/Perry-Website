@@ -11,6 +11,7 @@ add_action( 'wp_enqueue_scripts', 'add_parent_styles' );
 function perry_script_enqueue() {
 
 	wp_enqueue_style( 'perry-css', get_stylesheet_directory_uri() . '/css/perry.css' );
+	wp_enqueue_script( 'perry-js', get_stylesheet_directory_uri() . '/js/perry.js', array( 'jquery' ), '1.0.0', true );
 
 }
 

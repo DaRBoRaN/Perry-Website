@@ -25,7 +25,7 @@
 		</div>
 
 		<div class="row">
-			<div class="col-sm-12 text-right">
+			<div class="col-sm-12">
 				<div class="copyright-text">
 					Copyright © 2017 Perry Bor
 				</div>
